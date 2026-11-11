@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>상품 상세 - 슝책마켓</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/product-pages.css" />
+</head>
+<body class="product-page">
+  <div id="header"></div>
+
+  <main class="container main detail-main">
+    <a class="back-link" href="../index.html#books">‹ 전공책 목록으로</a>
+
+    <section class="panel product-panel" id="missingProduct" hidden>
+      <h1 class="page-title">상품을 찾을 수 없어요</h1>
+      <p>주소를 확인하거나 전공책 목록에서 다시 선택해 주세요.</p>
+    </section>
+
+    <div id="productDetail" hidden>
+      <section class="panel product-panel detail-overview" aria-labelledby="productTitle">
+        <div class="detail-gallery">
+          <img class="detail-photo" id="productPhoto" alt="" />
+          <div class="detail-thumbs" id="photoThumbnails" aria-label="상품 사진 선택"></div>
+        </div>
+        <div class="detail-summary">
+          <span class="badge" id="productStatus"></span>
+          <h1 id="productTitle"></h1>
+          <p class="detail-price" id="productPrice"></p>
+          <p class="detail-meta" id="productMeta"></p>
+
+          <dl class="detail-specs">
+            <div><dt>책 상태</dt><dd id="productCondition"></dd></div>
+            <div><dt>판 / 발행연도</dt><dd id="productEdition"></dd></div>
+            <div><dt>수업</dt><dd id="productSubject"></dd></div>
+            <div><dt>희망 거래 장소</dt><dd id="productPlace"></dd></div>
+          </dl>
+
+          <div class="detail-seller">
+            <span class="seller-avatar" aria-hidden="true">슝</span>
+            <div>
+              <p class="seller-name" id="productSeller"></p>
+              <p class="detail-meta" id="sellerDepartment"></p>
+            </div>
+          </div>
+
+          <div class="detail-actions">
+            <button class="btn-outline" id="favoriteProduct" type="button" aria-pressed="false">♡ 관심</button>
+            <a class="btn-primary" id="contactSeller" href="chat.html">채팅으로 문의하기</a>
+          </div>
+          <p class="detail-meta" id="detailActionMessage" role="status">채팅에서 거래 장소와 시간을 정하세요.</p>
+        </div>
+      </section>
+
+      <section class="panel product-panel detail-description" aria-labelledby="descriptionTitle">
+        <h2 id="descriptionTitle">책 소개</h2>
+        <p id="productDescription"></p>
+      </section>
+
+      <section class="panel product-panel" aria-labelledby="relatedTitle">
+        <h2 id="relatedTitle">같이 보면 좋은 전공책</h2>
+        <div class="related-products" id="relatedProducts"></div>
+        <template id="relatedProductTemplate">
+          <a class="related-product">
+            <img alt="" loading="lazy" />
+            <div>
+              <h3></h3>
+              <p class="related-price"></p>
+              <p class="detail-meta"></p>
+            </div>
+          </a>
+        </template>
+      </section>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+  <script src="../js/products.js"></script>
+  <script src="../js/main.js" data-root="../" data-round-header></script>
+  <script src="../js/detail.js"></script>
+</body>
+</html>

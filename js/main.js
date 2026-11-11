@@ -1,20 +1,7 @@
-// 경로
-const IMG = "assets/images/";
-const PAGE = "pages/";
-
-// 하드코딩 데이터
-const STATUS = { selling: "판매중", reserved: "예약중", done: "거래완료" };
-
-const books = [
-  { id: 1, title: "HTML5 웹 프로그래밍·자바 세트", price: 18000, dept: "AI소프트웨어학부", college: "AI대학", time: "5분 전", place: "정보과학관 직거래", status: "selling", img: "book_01.svg" },
-  { id: 2, title: "운영체제 · 아주 쉬운 세 가지 이야기", price: 22000, dept: "컴퓨터학부", college: "IT대학", time: "18분 전", place: "중앙도서관 직거래", status: "selling", img: "book_02.svg" },
-  { id: 3, title: "개발자를 위한 머신러닝&딥러닝", price: 15000, dept: "AI소프트웨어학부", college: "AI대학", time: "32분 전", place: "정보과학관 직거래", status: "reserved", img: "book_03.svg" },
-  { id: 4, title: "4차 산업혁명 시대의 이산수학", price: 12000, dept: "수학과", college: "자연과학대학", time: "1시간 전", place: "베어드홀 직거래", status: "selling", img: "book_04.svg" },
-  { id: 5, title: "그림으로 배우는 데이터베이스", price: 20000, dept: "컴퓨터학부", college: "IT대학", time: "2시간 전", place: "정보과학관 직거래", status: "selling", img: "book_05.svg" },
-  { id: 6, title: "핵심 미분적분학 9판", price: 14000, dept: "수학과", college: "자연과학대학", time: "3시간 전", place: "베어드홀 직거래", status: "done", img: "book_06.svg" },
-  { id: 7, title: "컴퓨터·개발 전공서적 일괄", price: 19000, dept: "컴퓨터학부", college: "IT대학", time: "38분 전", place: "중앙도서관 직거래", status: "selling", img: "book_07.svg" },
-  { id: 8, title: "처음 시작하는 파이썬 2판", price: 13000, dept: "AI소프트웨어학부", college: "AI대학", time: "5분 전", place: "정보과학관 직거래", status: "selling", img: "book_08.svg" },
-];
+const ROOT = document.currentScript.dataset.root || "";
+const ROUND_HEADER = document.currentScript.hasAttribute("data-round-header");
+const IMG = ROOT + "assets/images/";
+const PAGE = ROOT + "pages/";
 
 const HEART = `<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" /></svg>`;
 
@@ -29,7 +16,7 @@ function renderHeader() {
   el.innerHTML = `
     <header class="header">
       <div class="container header-inner">
-        <a href="index.html" class="logo">
+        <a href="${ROOT}index.html" class="logo">
           <img src="${IMG}logo.svg" alt="슝책마켓" />
         </a>
 
@@ -37,7 +24,7 @@ function renderHeader() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" />
           </svg>
-          <input type="text" name="q" placeholder="어떤 전공책을 찾으세요?" />
+          <input type="text" name="q" aria-label="전공책 검색" placeholder="어떤 전공책을 찾으세요?" />
         </form>
 
         <nav class="nav">
@@ -64,6 +51,16 @@ function renderHeader() {
         </nav>
       </div>
     </header>`;
+
+  if (ROUND_HEADER) {
+    const slots = el.querySelectorAll(".search-bar svg, .nav-item svg");
+    ["search", "chat", "sell", "my"].forEach((name, index) => {
+      const icon = document.createElement("img");
+      icon.src = IMG + "round03/" + name + ".svg";
+      icon.alt = "";
+      slots[index].replaceWith(icon);
+    });
+  }
 }
 
 // footer
@@ -75,26 +72,33 @@ function renderFooter() {
       <div class="container footer-inner">
         <img src="${IMG}logo.svg" alt="슝책마켓" class="footer-logo" />
         <p class="footer-text">숭실대학교 웹프로그래밍 팀 프로젝트 26조</p>
-        <p class="footer-copy">© 2026 Team 26. All rights reserved.</p>
+        ${ROUND_HEADER ? "" : `<p class="footer-copy">© 2026 Team 26. All rights reserved.</p>`}
       </div>
     </footer>`;
 }
 
-// 책 카드 
+// 상품 작성 폼의 입력을 HTML 텍스트와 속성에 안전하게 삽입합니다.
+function escapeHTML(value) {
+  const escapes = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+  return String(value ?? "").replace(/[&<>"']/g, (character) => escapes[character]);
+}
+
+// 책 카드
 function cardHTML(b) {
+  const liked = isFavorite(b.id);
   return `
     <article class="book-card ${b.status}">
-      <a href="${PAGE}detail.html?id=${b.id}" class="book-link">
+      <a href="${PAGE}detail.html?id=${encodeURIComponent(b.id)}" class="book-link">
         <div class="book-thumb">
-          <img src="${IMG}books/${b.img}" alt="${b.title}" />
+          <img src="${escapeHTML(productImages(b, IMG)[0])}" alt="${escapeHTML(b.title)}" />
         </div>
         <span class="badge ${b.status}">${STATUS[b.status]}</span>
-        <h3 class="book-title">${b.title}</h3>
+        <h3 class="book-title">${escapeHTML(b.title)}</h3>
         <p class="book-price">${won(b.price)}</p>
-        <p class="book-meta">${b.dept} · ${b.time}</p>
-        <p class="book-meta">${b.place}</p>
+        <p class="book-meta">${escapeHTML(b.dept)} · ${escapeHTML(productTime(b))}</p>
+        <p class="book-meta">${escapeHTML(b.place)}</p>
       </a>
-      <button class="like-btn" aria-label="찜하기">${HEART}</button>
+      <button type="button" class="like-btn${liked ? " liked" : ""}" data-product-id="${escapeHTML(b.id)}" aria-label="찜하기" aria-pressed="${liked}">${HEART}</button>
     </article>`;
 }
 
@@ -111,7 +115,7 @@ function initBookList() {
   let college = "전체";
 
   function render() {
-    const list = books.filter(
+    const list = getProducts().filter(
       (b) =>
         (college === "전체" || b.college === college) &&
         (includeDone.checked || b.status !== "done")
@@ -135,6 +139,7 @@ function initBookList() {
 
   includeDone.addEventListener("change", render);
   sortSelect.addEventListener("change", render);
+  window.addEventListener("pageshow", render);
   render();
 }
 
@@ -167,7 +172,14 @@ function initMoreButton() {
 // 찜 버튼
 document.addEventListener("click", (e) => {
   const btn = e.target.closest(".like-btn");
-  if (btn) btn.classList.toggle("liked");
+  if (!btn) return;
+  try {
+    const liked = toggleFavorite(btn.dataset.productId);
+    btn.classList.toggle("liked", liked);
+    btn.setAttribute("aria-pressed", String(liked));
+  } catch {
+    console.warn("관심 상품을 저장하지 못했습니다.");
+  }
 });
 
 // 실행

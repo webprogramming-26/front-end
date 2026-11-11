@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>전공책 판매하기 - 슝책마켓</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/product-pages.css" />
+</head>
+<body class="product-page">
+  <div id="header"></div>
+
+  <main class="container main sell-main">
+    <h1 class="page-title">전공책 판매하기</h1>
+
+    <form class="panel product-panel sell-form" id="sellForm">
+      <section class="sell-section" aria-labelledby="photosTitle">
+        <h2 id="photosTitle">책 사진 *</h2>
+        <div class="sell-photos" id="photoList">
+          <button class="photo-add" id="addPhotos" type="button" aria-describedby="photoHelp">
+            <span class="photo-add-icon" aria-hidden="true">＋</span>
+            <span>사진 추가</span>
+            <span class="photo-count" id="photoCount" aria-live="polite">0 / 5</span>
+          </button>
+        </div>
+        <input type="file" id="bookPhotos" accept="image/jpeg,image/png" multiple hidden />
+        <p class="sell-help" id="photoHelp">표지와 필기 상태가 보이는 사진을 등록하세요. JPG·PNG, 최대 5장, 장당 5MB</p>
+        <p class="sell-error" id="photoError" role="alert" hidden></p>
+      </section>
+
+      <section class="sell-section" aria-labelledby="basicTitle">
+        <h2 id="basicTitle">기본 정보</h2>
+        <div class="sell-fields">
+          <label class="sell-field field-wide">제목 *
+            <input name="title" required maxlength="80" placeholder="예: HTML5 웹 프로그래밍·자바 세트" />
+          </label>
+          <label class="sell-field">가격 *
+            <span class="price-field">
+              <input name="price" type="number" required min="0" max="99999999" step="1" inputmode="numeric" placeholder="18,000" />
+              <span aria-hidden="true">원</span>
+            </span>
+          </label>
+          <label class="sell-field">책 상태
+            <select name="condition">
+              <option value="">상태 선택</option>
+              <option>거의 새 책</option>
+              <option>필기 조금</option>
+              <option>필기 많음</option>
+              <option>사용감 있음</option>
+            </select>
+          </label>
+          <label class="sell-field">단과대학 *
+            <select name="college" required>
+              <option value="">단과대학 선택</option>
+              <option>AI대학</option><option>IT대학</option><option>인문대학</option>
+              <option>경영대학</option><option>자연과학대학</option><option>공과대학</option>
+              <option>법과대학</option><option>사회과학대학</option><option>경제통상대학</option>
+              <option>자유전공학부</option><option>교양</option>
+            </select>
+          </label>
+          <label class="sell-field">학과 *
+            <input name="dept" required maxlength="40" list="departmentSuggestions" placeholder="학과 입력 또는 선택" />
+            <datalist id="departmentSuggestions"></datalist>
+          </label>
+          <label class="sell-field">과목명 (선택)
+            <input name="subject" maxlength="60" placeholder="예: 웹프로그래밍" />
+          </label>
+          <label class="sell-field">판 / 발행연도 (선택)
+            <input name="edition" maxlength="60" placeholder="예: 4판 · 2024년" />
+          </label>
+        </div>
+      </section>
+
+      <section class="sell-section" aria-labelledby="tradeTitle">
+        <h2 id="tradeTitle">거래 정보</h2>
+        <div class="sell-fields">
+          <label class="sell-field field-wide">희망 직거래 장소 *
+            <select name="place" required>
+              <option value="">직거래 장소 선택</option>
+              <option>정보과학관</option><option>중앙도서관</option>
+              <option>베어드홀</option><option>숭덕경상관</option>
+              <option>형남공학관</option><option>학생회관</option><option>정문</option>
+            </select>
+          </label>
+          <label class="sell-field field-wide">상품 설명 *
+            <textarea name="description" required maxlength="2000" rows="4" placeholder="필기 여부, 책 상태, 거래 가능한 시간 등을 적어 주세요."></textarea>
+          </label>
+        </div>
+      </section>
+
+      <p class="sell-error" id="submitError" role="alert" hidden></p>
+      <div class="sell-actions">
+        <a href="../index.html" class="btn-outline">취소</a>
+        <button class="btn-primary" type="submit" id="publishProduct">판매글 등록</button>
+      </div>
+    </form>
+  </main>
+
+  <div id="footer"></div>
+  <script src="../js/products.js"></script>
+  <script src="../js/main.js" data-root="../" data-round-header></script>
+  <script src="../js/sell.js"></script>
+</body>
+</html>
