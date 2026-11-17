@@ -1,0 +1,473 @@
+/* ROUND 03: 상품 검색과 마이페이지. 기존 페이지에 영향을 주지 않도록 범위를 제한합니다. */
+.workspace-page {
+  --sub: #657787;
+}
+.workspace-main {
+  max-width: 1328px;
+  padding-top: 40px;
+  padding-bottom: 70px;
+  min-height: calc(100vh - 180px);
+}
+.workspace-main h1 {
+  font-size: 30px;
+  line-height: 1.5;
+  margin-bottom: 28px;
+}
+.workspace-main h2 {
+  font-size: 22px;
+  line-height: 1.5;
+}
+.page-intro {
+  color: var(--sub);
+  margin-top: -20px;
+  margin-bottom: 28px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.surface {
+  background: var(--white);
+  border-radius: 28px;
+  min-width: 0;
+}
+.search-layout {
+  display: grid;
+  grid-template-columns: 256px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.filter-panel {
+  padding: 24px;
+  display: grid;
+  gap: 24px;
+}
+.heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.filter-panel h2 {
+  font-size: 20px;
+}
+.text-button {
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+  text-align: left;
+}
+.muted {
+  color: var(--sub);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.field {
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  min-width: 0;
+}
+.field input,
+.field select {
+  width: 100%;
+  min-width: 0;
+  height: 52px;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+}
+.field input::placeholder {
+  color: var(--sub);
+}
+.filter-panel fieldset {
+  border: 0;
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+  min-width: 0;
+}
+.filter-panel legend {
+  float: left;
+  width: 100%;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+.status-checks {
+  clear: both;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 10px;
+  font-size: 14px;
+}
+.status-checks label:last-child {
+  flex-basis: 100%;
+}
+.status-checks input {
+  accent-color: var(--primary);
+}
+.price-fields .field {
+  clear: both;
+  margin-bottom: 24px;
+}
+.price-fields .field:last-child {
+  margin-bottom: 0;
+}
+.workspace-page .btn-primary,
+.workspace-page .btn-outline {
+  border-radius: 26px;
+  min-height: 48px;
+}
+.results-panel {
+  padding: 44px;
+  display: grid;
+  gap: 28px;
+}
+.filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.filter-tag,
+.filter-tags button {
+  border: 0;
+  border-radius: 22px;
+  padding: 10px 16px;
+  min-height: 40px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 20px;
+}
+.filter-tags button {
+  cursor: pointer;
+}
+.filter-tags button[aria-pressed="true"] {
+  background: var(--text);
+  color: white;
+}
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px 24px;
+}
+.search-grid .book-thumb {
+  aspect-ratio: 286 / 224;
+  border-radius: 24px;
+  margin-bottom: 12px;
+}
+.search-grid .book-title {
+  white-space: normal;
+  line-height: 1.5;
+  font-size: 17px;
+}
+.search-grid .book-price {
+  font-size: 22px;
+}
+.search-grid .badge {
+  margin-bottom: 6px;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.pagination button {
+  border: 0;
+  min-width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--text);
+  background: var(--bg);
+  cursor: pointer;
+}
+.pagination button[aria-current="page"] {
+  background: var(--text);
+  color: white;
+}
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.empty-state {
+  text-align: center;
+  padding: 50px 12px;
+  line-height: 1.7;
+}
+.empty-state p {
+  color: var(--sub);
+  margin: 12px 0 24px;
+}
+.account-layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.profile-panel {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e5f2fb;
+  color: var(--primary);
+  font-size: 26px;
+  font-weight: 700;
+}
+.profile-panel .btn-outline,
+.profile-panel hr {
+  width: 100%;
+}
+.profile-panel hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+.active-profile-link {
+  color: var(--primary);
+  font-weight: 700;
+}
+#profileDepartment {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.listings-panel {
+  padding: 32px;
+}
+.listings-panel > .filter-tags {
+  margin: 24px 0;
+}
+.listings-panel .heading-row .btn-primary {
+  min-width: 160px;
+}
+.listing-row {
+  display: grid;
+  grid-template-columns: 124px minmax(0, 1fr) 150px;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+}
+.listing-thumb {
+  position: relative;
+}
+.listing-thumb > a > img {
+  display: block;
+  width: 124px;
+  height: 97px;
+  object-fit: cover;
+  border-radius: 16px;
+}
+.listing-thumb .like-btn {
+  width: 22px;
+  height: 22px;
+  top: 6px;
+  right: 6px;
+}
+.listing-thumb .like-btn svg {
+  width: 12px;
+  height: 12px;
+}
+.listing-info {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.listing-info h3 {
+  font-size: 17px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.listing-price {
+  font-size: 20px;
+  font-weight: 700;
+}
+.listing-status {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--sub);
+}
+.listing-status.selling {
+  color: #15816b;
+}
+.listing-controls {
+  display: grid;
+  gap: 10px;
+}
+.listing-controls select {
+  width: 150px;
+  height: 48px;
+  border: 1px solid #dee1e6;
+  border-radius: 26px;
+  padding: 0 20px;
+  background: white;
+  color: var(--text);
+  font-weight: 700;
+}
+.listing-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  font-size: 14px;
+}
+.status-guide {
+  background: var(--bg);
+  border-radius: 16px;
+  padding: 20px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.status-guide p {
+  color: var(--sub);
+  font-size: 14px;
+  margin-top: 6px;
+}
+.demo-note {
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--sub);
+}
+#accountMessage {
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: var(--primary);
+}
+.workspace-page dialog {
+  margin: auto;
+  width: min(460px, calc(100% - 32px));
+  max-height: 90vh;
+  overflow: auto;
+  padding: 28px;
+  border: 0;
+  border-radius: 24px;
+  color: var(--text);
+}
+.workspace-page dialog::backdrop {
+  background: rgba(20, 35, 48, 0.45);
+}
+.workspace-page dialog h2 {
+  margin-bottom: 20px;
+}
+.workspace-page dialog p {
+  margin: 12px 0;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.workspace-page dialog .field {
+  margin-bottom: 16px;
+}
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+.workspace-page [hidden] {
+  display: none !important;
+}
+@media (max-width: 1100px) {
+  .search-layout {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+  .results-panel {
+    padding: 28px;
+  }
+  .search-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .account-layout {
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+  .listing-row {
+    grid-template-columns: 100px minmax(0, 1fr);
+  }
+  .listing-thumb > a > img {
+    width: 100px;
+    height: 88px;
+  }
+  .listing-controls {
+    grid-column: 2;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+}
+@media (max-width: 760px) {
+  .workspace-main {
+    padding-top: 28px;
+  }
+  .search-layout,
+  .account-layout {
+    grid-template-columns: 1fr;
+  }
+  .profile-panel {
+    gap: 16px;
+  }
+  .results-panel,
+  .listings-panel {
+    padding: 24px;
+  }
+  .filter-panel {
+    gap: 18px;
+  }
+  .search-grid {
+    gap: 24px 16px;
+  }
+  .search-grid .book-title {
+    font-size: 15px;
+  }
+  .search-grid .book-price {
+    font-size: 19px;
+  }
+  .results-panel .heading-row {
+    align-items: flex-start;
+  }
+  .workspace-main h1 {
+    font-size: 26px;
+  }
+}
+@media (max-width: 400px) {
+  .results-panel,
+  .listings-panel {
+    padding: 18px;
+  }
+  .listing-row {
+    grid-template-columns: 80px minmax(0, 1fr);
+    gap: 14px;
+  }
+  .listing-thumb > a > img {
+    width: 80px;
+    height: 80px;
+  }
+  .listing-controls {
+    grid-column: 1/-1;
+  }
+  .heading-row h2 {
+    font-size: 19px;
+  }
+  .listings-panel .heading-row .btn-primary {
+    min-width: 0;
+    padding: 12px 16px;
+  }
+}
+
+#resultsTitle {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.results-panel .sort-select {
+  flex-shrink: 0;
+  max-width: 150px;
+}

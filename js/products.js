@@ -44,7 +44,13 @@ function getProducts() {
     console.warn("저장한 판매글을 불러오지 못했습니다.", error);
   }
   const samples = books.map((book, index) => ({ ...book, ...sampleDetails[index] }));
-  return [...saved.slice().reverse(), ...samples];
+  let changes = [];
+  try { changes = readStoredArray("shungbook.productChanges"); } catch (error) { console.warn(error); }
+  return [...saved.slice().reverse(), ...samples].map((book) => {
+    const change = changes.find((item) => String(item.id) === String(book.id));
+    const demo = String(book.id) === "5" ? { status: "reserved" } : {};
+    return { ...book, ...demo, ...change };
+  }).filter((book) => !book.deleted);
 }
 
 function getProduct(id) {
@@ -99,3 +105,38 @@ function toggleFavorite(id) {
   return liked;
 }
 
+
+// 서버 없는 데모: 샘플 1·5·6과 이 브라우저에서 작성한 글이 내 판매글입니다.
+function isMyProduct(book) {
+  return Boolean(book) && (["1", "5", "6"].includes(String(book.id)) || String(book.id).startsWith("local-"));
+}
+function getMyProducts() { return getProducts().filter(isMyProduct); }
+function updateProduct(id, fields) {
+  const book = getProduct(id);
+  if (!isMyProduct(book)) throw new Error("수정할 수 없는 판매글입니다.");
+  const allowed = ["title", "price", "college", "dept", "condition", "edition", "subject", "place", "description", "photos", "status", "deleted"];
+  const patch = Object.fromEntries(Object.entries(fields).filter(([key]) => allowed.includes(key)));
+  if (patch.status && !Object.hasOwn(STATUS, patch.status)) throw new Error("올바르지 않은 거래 상태입니다.");
+  if (patch.title !== undefined) patch.detailTitle = patch.title;
+  // 한 키에 한 번 쓰므로 저장 용량 오류가 나면 기존 데이터가 유지됩니다.
+  const changes = readStoredArray("shungbook.productChanges");
+  const previous = changes.find((item) => String(item.id) === String(id)) || {};
+  const next = { ...previous, ...patch, id: book.id };
+  localStorage.setItem("shungbook.productChanges", JSON.stringify([...changes.filter((item) => String(item.id) !== String(id)), next]));
+  return { ...book, ...next };
+}
+function deleteProduct(id) { return updateProduct(id, { deleted: true }); }
+function getProfile() {
+  const fallback = { nickname: "슝슝이1", college: "AI대학", dept: "AI소프트웨어학부" };
+  try {
+    const profile = JSON.parse(localStorage.getItem("shungbook.profile"));
+    return Object.fromEntries(Object.entries(fallback).map(([key, value]) => [key, typeof profile?.[key] === "string" ? profile[key] : value]));
+  } catch { return fallback; }
+}
+function productTimestamp(book) {
+  if (book.createdAt) return Date.parse(book.createdAt) || 0;
+  const match = (book.time || "").match(/(\d+)(분|시간|일)/);
+  const minutes = match ? Number(match[1]) * ({ "분": 1, "시간": 60, "일": 1440 }[match[2]]) : 0;
+  // 예시 글은 고정 기준 시각을 사용하여 새 글보다 뒤에 배치합니다.
+  return Date.UTC(2026, 9, 23, 12) - minutes * 60000;
+}
