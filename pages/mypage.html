@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>마이페이지 - 슝책마켓</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/product-pages.css" />
+    <link rel="stylesheet" href="../css/account-search.css" />
+  </head>
+  <body class="product-page workspace-page">
+    <div id="header"></div>
+    <main class="container workspace-main">
+      <h1>마이페이지</h1>
+      <div class="account-layout">
+        <aside class="surface profile-panel">
+          <div class="profile-avatar" aria-hidden="true">슝</div>
+          <h2 id="profileName">슝슝이1</h2>
+          <span class="filter-tag">학교 구성원 인증 · 예시</span>
+          <p class="muted" id="profileDepartment"></p>
+          <button class="btn-outline" id="editProfile" type="button">
+            프로필 수정
+          </button>
+          <hr />
+          <a class="active-profile-link" href="#myListings">내 판매글</a
+          ><button class="text-button" id="myChat" type="button">내 채팅</button
+          ><button class="text-button muted" id="logout" type="button">
+            로그아웃
+          </button>
+        </aside>
+        <section
+          class="surface listings-panel"
+          id="myListings"
+          aria-labelledby="listingsHeading"
+        >
+          <div class="heading-row">
+            <h2 id="listingsHeading">내 판매글</h2>
+            <a href="sell.html" class="btn-primary">판매글 작성</a>
+          </div>
+          <div
+            id="listingFilters"
+            class="filter-tags"
+            aria-label="거래 상태별 보기"
+          ></div>
+          <p id="accountMessage" role="status" aria-live="polite" hidden></p>
+          <div id="listingRows"></div>
+          <div id="noListings" class="empty-state" hidden>
+            <h3>표시할 판매글이 없어요.</h3>
+            <p>다른 상태를 선택하거나 새 판매글을 등록해 보세요.</p>
+            <a class="btn-outline" href="sell.html">판매글 작성</a>
+          </div>
+          <div class="status-guide">
+            <strong>거래 상태 변경</strong>
+            <p>
+              구매자와 약속한 경우 예약중, 거래를 마친 경우 거래완료로
+              변경하세요.
+            </p>
+          </div>
+          <p class="demo-note">
+            예시 판매글 3개와 이 브라우저에서 등록한 판매글을 관리합니다.
+          </p>
+        </section>
+      </div>
+    </main>
+    <dialog id="profileDialog" aria-labelledby="profileDialogTitle">
+      <form id="profileForm">
+        <h2 id="profileDialogTitle">프로필 수정</h2>
+        <label class="field"
+          >닉네임<input name="nickname" required maxlength="20" /></label
+        ><label class="field"
+          >단과대학<input name="college" required maxlength="40" /></label
+        ><label class="field"
+          >학과<input name="dept" required maxlength="40"
+        /></label>
+        <p class="sell-error" id="profileError" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <button type="button" class="btn-outline" data-close="profileDialog">
+            취소</button
+          ><button class="btn-primary" type="submit">저장</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="deleteDialog" aria-labelledby="deleteTitle">
+      <h2 id="deleteTitle">판매글을 삭제할까요?</h2>
+      <p id="deleteName"></p>
+      <p class="muted">삭제한 판매글은 복구할 수 없어요.</p>
+      <div class="dialog-actions">
+        <button class="btn-outline" type="button" data-close="deleteDialog">
+          취소</button
+        ><button class="btn-primary" id="confirmDelete" type="button">
+          삭제
+        </button>
+      </div>
+    </dialog>
+    <dialog id="infoDialog" aria-labelledby="infoTitle">
+      <h2 id="infoTitle">서비스 안내</h2>
+      <p id="infoText"></p>
+      <div class="dialog-actions">
+        <button class="btn-primary" type="button" data-close="infoDialog">
+          확인
+        </button>
+      </div>
+    </dialog>
+    <div id="footer"></div>
+    <script src="../js/products.js"></script>
+    <script src="../js/main.js" data-root="../" data-round-header></script>
+    <script src="../js/mypage.js"></script>
+  </body>
+</html>

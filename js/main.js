@@ -121,6 +121,7 @@ function initBookList() {
         (includeDone.checked || b.status !== "done")
     );
 
+    if (sortSelect.value === "latest") list.sort((a, b) => productTimestamp(b) - productTimestamp(a));
     if (sortSelect.value === "low") list.sort((a, b) => a.price - b.price);
     if (sortSelect.value === "high") list.sort((a, b) => b.price - a.price);
 

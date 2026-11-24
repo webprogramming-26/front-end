@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>전공책 찾기 - 슝책마켓</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/product-pages.css" />
+    <link rel="stylesheet" href="../css/account-search.css" />
+  </head>
+  <body class="product-page workspace-page">
+    <div id="header"></div>
+    <main class="container workspace-main">
+      <h1>전공책 찾기</h1>
+      <p class="page-intro">단과대학과 학과를 선택해 상품을 찾아보세요.</p>
+      <div class="search-layout">
+        <form id="filterForm" class="surface filter-panel">
+          <div class="heading-row">
+            <h2>필터</h2>
+            <button type="button" class="text-button muted" id="resetFilters">
+              초기화
+            </button>
+          </div>
+          <label class="field"
+            >단과대학<select name="college" id="collegeFilter">
+              <option value="">전체</option>
+            </select></label
+          >
+          <label class="field"
+            >학과<select name="dept" id="departmentFilter">
+              <option value="">전체 학과</option>
+            </select></label
+          >
+          <fieldset>
+            <legend>거래 상태</legend>
+            <div class="status-checks">
+              <label
+                ><input type="checkbox" name="status" value="selling" checked />
+                판매중</label
+              ><label
+                ><input
+                  type="checkbox"
+                  name="status"
+                  value="reserved"
+                  checked
+                />
+                예약중</label
+              ><label
+                ><input type="checkbox" name="status" value="done" checked />
+                거래완료</label
+              >
+            </div>
+          </fieldset>
+          <fieldset class="price-fields">
+            <legend>가격</legend>
+            <label class="field"
+              >최저 가격<input
+                name="min"
+                type="number"
+                min="0"
+                max="99999999"
+                step="1"
+                placeholder="0 원" /></label
+            ><label class="field"
+              >최고 가격<input
+                name="max"
+                type="number"
+                min="0"
+                max="99999999"
+                step="1"
+                placeholder="금액 입력"
+            /></label>
+          </fieldset>
+          <p id="filterError" class="sell-error" role="alert" hidden></p>
+          <button class="btn-primary" type="submit">필터 적용</button>
+        </form>
+        <section class="surface results-panel" aria-labelledby="resultsTitle">
+          <div class="heading-row">
+            <h2 id="resultsTitle">전체 전공책</h2>
+            <select id="searchSort" class="sort-select" aria-label="상품 정렬">
+              <option value="latest">최신순</option>
+              <option value="low">낮은 가격순</option>
+              <option value="high">높은 가격순</option>
+            </select>
+          </div>
+          <div id="activeFilters" class="filter-tags"></div>
+          <p
+            id="resultCount"
+            class="muted"
+            role="status"
+            aria-live="polite"
+          ></p>
+          <div id="searchGrid" class="search-grid"></div>
+          <div id="noResults" class="empty-state" hidden>
+            <h3>조건에 맞는 전공책이 없어요.</h3>
+            <p>검색어나 필터를 바꿔 다시 찾아보세요.</p>
+            <button class="btn-outline" id="clearSearch" type="button">
+              전체 전공책 보기
+            </button>
+          </div>
+          <nav
+            id="pagination"
+            class="pagination"
+            aria-label="검색 결과 페이지"
+          ></nav>
+        </section>
+      </div>
+    </main>
+    <div id="footer"></div>
+    <script src="../js/products.js"></script>
+    <script src="../js/main.js" data-root="../" data-round-header></script>
+    <script src="../js/search.js"></script>
+  </body>
+</html>

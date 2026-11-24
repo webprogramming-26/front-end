@@ -71,7 +71,7 @@ function renderProductDetail() {
   });
 
   const contact = document.getElementById("contactSeller");
-  if (book.status === "done" || book.id.toString().startsWith("local-")) {
+  if (book.status === "done" || isMyProduct(book)) {
     contact.removeAttribute("href");
     contact.setAttribute("aria-disabled", "true");
     contact.classList.add("disabled");

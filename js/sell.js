@@ -11,6 +11,27 @@ const MAX_PHOTOS = 5;
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const photos = [];
 let preparingPhotos = false;
+const editId = new URLSearchParams(location.search).get("edit");
+const editingProduct = editId ? getProduct(editId) : null;
+let canEdit = !editId || isMyProduct(editingProduct);
+if (editId) {
+  if (!canEdit) {
+    setError(submitError, "수정할 판매글을 찾을 수 없어요.");
+    publishProduct.disabled = true;
+  } else {
+    document.title = "판매글 수정 - 슝책마켓";
+    document.querySelector(".page-title").textContent = "판매글 수정";
+    publishProduct.textContent = "수정 내용 저장";
+    for (const key of ["title", "price", "condition", "college", "dept", "subject", "edition", "place", "description"]) {
+      const input = sellForm.elements[key];
+      const value = editingProduct[key] ?? (key === "description" ? "책 상태와 거래 가능 시간을 입력해 주세요." : "");
+      if (input.tagName === "SELECT" && value && ![...input.options].some((option) => option.value === String(value))) input.add(new Option(value, value));
+      input.value = value;
+    }
+    photos.push(...productImages(editingProduct, "../assets/images/"));
+    renderPhotos();
+  }
+}
 
 function setError(element, message) {
   element.textContent = message;
@@ -91,7 +112,7 @@ photoInput.addEventListener("change", async () => {
   } finally {
     photoInput.value = "";
     preparingPhotos = false;
-    publishProduct.disabled = false;
+    publishProduct.disabled = !canEdit;
     renderPhotos();
     setError(photoError, [...errors].join(" "));
   }
@@ -111,7 +132,7 @@ sellForm.addEventListener("input", (event) => {
 
 sellForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  if (preparingPhotos) return;
+  if (preparingPhotos || !canEdit) return;
   setError(submitError, "");
   if (!photos.length) {
     setError(photoError, "책 사진을 한 장 이상 추가해 주세요.");
@@ -131,11 +152,11 @@ sellForm.addEventListener("submit", (event) => {
   }
 
   fields.price = Number(fields.price);
-  fields.photos = [...photos];
+  fields.photos = photos.filter((photo) => photo.startsWith("data:image/jpeg;base64,"));
   publishProduct.disabled = true;
   let product;
   try {
-    product = saveProduct(fields);
+    product = editId ? updateProduct(editId, fields) : saveProduct(fields);
   } catch (error) {
     setError(submitError, error.name === "QuotaExceededError"
       ? "브라우저 저장 공간이 부족해요. 사진 수를 줄인 뒤 다시 시도해 주세요."
